@@ -1,0 +1,310 @@
+<!-- 기업분석 페이지 -->
+{% extends 'base.html' %}
+{% block content %}
+<section class="analysis-section">
+    <header>
+        <h1 class="header-text">기업분석 페이지</h1>
+    </header>
+    <form id="search-form" method="post" class="form-container">    
+        {% csrf_token %}
+        <div class="form-group">
+            <input id="company-name-input" type="text" name="company_name" placeholder="기업 이름 입력" required>
+            <button type="submit" class="btn">검색</button>
+        </div>
+    </form>
+    <div class="company-buttons">
+        <button class="company-btn" onclick="searchCompany('KT')">KT</button>
+        <button class="company-btn" onclick="searchCompany('SKT')">SKT</button>
+        <button class="company-btn" onclick="searchCompany('LG유플러스')">LG U+</button>
+        <button class="company-btn" onclick="searchCompany('중소기업은행')">IBK기업은행</button>
+        <button class="company-btn" onclick="searchCompany('국민은행')">KB국민은행</button>
+        <button class="company-btn" onclick="searchCompany('우리은행')">우리은행</button>
+        <button class="company-btn" onclick="searchCompany('한국전력공사')">한국전력공사</button>
+        <button class="company-btn" onclick="searchCompany('한국철도공사')">한국철도공사</button>
+        <button class="company-btn" onclick="searchCompany('한국도로공사')">한국도로공사</button>
+        <button class="company-btn" onclick="searchCompany('오뚜기')">오뚜기</button>
+        <button class="company-btn" onclick="searchCompany('CJ 제일제당')">CJ 제일제당</button>
+        <button class="company-btn" onclick="searchCompany('농심')">농심</button>
+        <button class="company-btn" onclick="searchCompany('현대자동차')">현대자동차</button>
+        <button class="company-btn" onclick="searchCompany('기아자동차')">기아자동차</button>
+        <button class="company-btn" onclick="searchCompany('삼성전자')">삼성전자</button>
+        <button class="company-btn" onclick="searchCompany('SK하이닉스')">SK하이닉스</button>
+        <button class="company-btn" onclick="searchCompany('네이버')">NAVER</button>
+        <button class="company-btn" onclick="searchCompany('넥슨')">NEXON</button>
+        <button class="company-btn" onclick="searchCompany('엔씨소프트')">NCSOFT</button>
+        <button class="company-btn" onclick="searchCompany('넷마블')">넷마블</button>
+    </div>
+    {% if company_info %}
+    <div id="popup" class="popup" onclick="closePopup(event)">
+        <div class="popup-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closePopup(event)"></button>
+            <div class="popup-header">
+                <h2>{{ company_info.name }}</h2>
+            </div>
+            <div class="popup-body">
+                <div class="popup-section">
+                    <h3>기업 기초 정보</h3>
+                </div>
+                <div class="popup-section flex-container">
+                    <div class="flex-item"><strong>사원 수:</strong> {{ company_info.employee_count }}명</div>
+                    <div class="flex-item"><strong>설립 일:</strong> {{ company_info.founding_date }}</div>
+                    <div class="flex-item"><strong>기업 구분:</strong> {{ company_info.company_type }}</div>
+                    <div class="flex-item"><strong>사업 분야:</strong> {{ company_info.overview }}</div>
+                    <div class="flex-item"><strong>매출액:</strong> {{ company_info.revenue }}</div>
+                    <div class="flex-item"><strong>영업 이익:</strong> {{ company_info.operating_profit }}</div>
+                    <div class="flex-item"><strong>주요 사업:</strong> {{ company_info.job_fields }}</div>
+                </div>
+                <div class="popup-section">
+                    <h3>SWOT 분석</h3>
+                    <p><strong>강점(S):</strong> {{ company_info.strength }}</p>
+                    <p><strong>약점(W):</strong> {{ company_info.weakness }}</p>
+                    <p><strong>기회(O):</strong> {{ company_info.opportunities }}</p>
+                    <p><strong>위협(T):</strong> {{ company_info.threats }}</p>
+                </div>
+                <div class="popup-section">
+                    <h3>기업 리뷰 정보</h3>
+                    <div class="rating-container">
+                        <div class="stars">
+                            {% for i in "12345" %}
+                                <span class="star">{% if forloop.counter <= company_info.rating %}★{% else %}☆{% endif %}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="popup-section flex-container">
+                    <div class="flex-item"><strong>평점: </strong>{{ company_info.rating|floatformat:1 }} / 5</div>
+                    <div class="flex-item"><strong>퍼센트:</strong> {{ company_info.percent }}%</div>
+                    <div class="flex-item"><strong>긍정:</strong> {{ company_info.goodkeywords }}</div>
+                    <div class="flex-item"><strong>부정:</strong> {{ company_info.badkeywords }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    header {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .header-text, .popup-header h2, .popup-section h3, .popup-body p strong {
+        color: #0056b3;
+    }
+
+    .header-subtext {
+        font-size: 16px;
+        color: #666;
+        margin: 10px 0 20px 0; /* 위아래 여백 조정 */
+    }
+
+    .analysis-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .company-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 800px; /* 전체 버튼 컨테이너의 최대 너비를 설정 */
+    }
+
+    .company-btn {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px; /* 크기를 줄이기 위해 패딩 조정 */
+        font-size: 14px; /* 폰트 크기 줄임 */
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: calc(25% - 10px); /* 한 줄에 4개씩 */
+        box-sizing: border-box;
+        text-align: center;
+        color: #333; /* 항상 기업 이름 보이도록 색상 설정 */
+    }
+
+    .company-btn:hover {
+        background-color: #f0f8ff;
+        border-color: #0056b3;
+        color: #0056b3;
+    }
+
+    .form-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        margin-top: 10px; /* 간격을 줄임 */
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-group input, .form-group button {
+        padding: 10px;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .form-group input {
+        border: 1px solid #ddd;
+    }
+
+    .form-group button {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .form-group button:hover {
+        background-color: #003d80;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .popup-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 90%;
+        max-width: 800px;
+        max-height: 80%;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .close-btn {
+        background: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #0056b3;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .close-btn::after {
+        content: '×';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .close-btn:hover {
+        border: 2px solid #0056b3;
+        color: white;
+        background-color: #0056b3;
+    }
+
+    .popup-body {
+        font-size: 16px;
+        margin-top: 30px;
+    }
+
+    .popup-section {
+        margin-bottom: 20px;
+    }
+
+    .popup-section h3 {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+    }
+
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    .flex-item {
+        flex: 1;
+        min-width: 45%;
+        margin-bottom: 10px;
+    }
+
+    .stars {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+    }
+
+    .star {
+        font-size: 32px;
+        color: #ffd700;
+        margin-right: 5px;
+    }
+
+    .keywords {
+        font-size: 18px;
+        color: #333;
+    }
+</style>
+
+<script>
+function closePopup(event) {
+    if (event.target.id === 'popup' || event.target.classList.contains('close-btn')) {
+        document.getElementById('popup').style.display = 'none';
+    }
+}
+
+function searchCompany(companyName) {
+    document.getElementById('company-name-input').value = companyName;
+    document.getElementById('search-form').submit();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    {% if company_info %}
+        document.getElementById('popup').style.display = 'flex';
+    {% endif %}
+});
+</script>
+{% endblock %}

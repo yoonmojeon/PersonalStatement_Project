@@ -1,0 +1,76 @@
+<!-- templates/myapp/resume_detail.html -->
+{% extends 'base.html' %}
+{% block content %}
+<header>
+    <h1>{{ resume.title }}</h1>
+</header>
+<section class="form-section">
+    <div class="form-container">
+        <button type="button" class="btn-copy" onclick="copyContent()">복사하기</button>
+        <p id="resume-content">{{ resume.content }}</p>
+        <p class="resume-date">생성일 : {{ resume.created_at|date:"Y-m-d" }}</p>
+    </div>
+</section>
+
+<style>
+    body {
+        background-color: #f0f8ff;
+    }
+    .form-section {
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 800px;
+    }
+
+    .form-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        transform: translateY(-60%);
+    }
+
+    .resume-date {
+        color: #666;
+        text-align: right;
+    }
+
+    header h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-copy {
+        background-color: #007bff;
+        color: white;
+        width:12%;
+        padding: 5px 10px; /* 패딩을 조정하여 버튼 크기 조정 */
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+        margin-left: 10px;
+        transform: translateY(-15%);
+    }
+
+    .btn-copy:hover {
+        background-color: #0056b3;
+    }
+
+</style>
+<script>
+    function copyContent() {
+        const content = document.getElementById('resume-content').innerText;
+        const textarea = document.createElement('textarea');
+        textarea.value = content;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert('내용이 복사되었습니다.');
+    }
+</script>
+{% endblock %}

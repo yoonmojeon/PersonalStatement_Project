@@ -1,0 +1,150 @@
+<!-- templates/myapp/home.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="text-align: center; margin-top: 20px;">
+    {% if user.is_authenticated %}
+        <!-- 로그인한 사용자에게 보여줄 내용 -->
+        <div class="authenticated-container">
+            <div class="left" onclick="location.href='{% url 'company_analysis' %}'">
+                <img src="{% static 'book.PNG' %}" alt="Left Image">
+                <a href="{% url 'company_analysis' %}" class="btn btn-left">기업 분석</a>
+            </div>
+            <div class="right" onclick="location.href='{% url 'user_info_form' %}'">
+                <img src="{% static 'AI.PNG' %}" alt="Right Image">
+                <a href="{% url 'user_info_form' %}" class="btn btn-right">자기소개서</a>
+            </div>
+        </div>
+    {% else %}
+        <!-- 로그인하지 않은 사용자에게 보여줄 내용 -->
+        <div class="home-container">
+            <div class="right">
+                <div class="text-content">
+                    <h1>기업 정보를 한눈에<br>기업 맞춤형 자기소개서 AI</h1>
+                    <p>맞춤형 자기소개서로 취업 준비부터 합격까지</p>
+                    <a href="{% url 'login' %}">
+                        <button class="btn">시작하기</button>
+                    </a>
+                </div>
+            </div>
+            <div class="left shifted-container">
+                <img src="{% static 'homepage.PNG' %}" alt="Introduction Image">
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    body {
+        background-color: #f0f8ff;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        overflow-x: hidden; /* 수평 스크롤이 생기지 않도록 설정 */
+    }
+    .home-container {
+        display: flex;
+        width: 120%;
+        max-width: 2000px;
+        transform: translateX(-20%);
+    }
+    .authenticated-container {
+        display: flex;
+        width: 100%;
+        max-width: 1500px;
+        justify-content: center;
+        transform: translateX(0); /* 로그인한 사용자 화면을 중앙으로 정렬 */
+    }
+    .left, .right {
+        position: relative;
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능성을 나타냄 */
+    }
+    .left img, .right img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .shifted-container {
+        transform: translateX(20%); /* 이미지 컨테이너를 오른쪽으로 이동 */
+    }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        text-align: center;
+    }
+    .overlay h2 {
+        margin: 20px 0;
+    }
+    .overlay p {
+        margin-bottom: 20px;
+    }
+    .btn {
+        background-color: #007bff;
+        color: white;
+        padding: 20px 35px; /* 버튼 크기를 키움 */
+        border: none;
+        border-radius: 5px;
+        font-size: 25px; /* 폰트 크기를 키움 */
+        cursor: pointer;
+        text-decoration: none;
+        position: absolute;
+    }
+    .btn-left {
+        bottom: 20px;
+        left: 20px;
+    }
+    .btn-right {
+        bottom: 20px;
+        right: 20px;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    .text-content {
+        max-width: 1500px; /* 텍스트 컨테이너의 최대 너비를 확장 */
+        text-align: left;
+        width: 100%; /* 텍스트 영역을 전체 너비로 확장 */
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        transform: translateX(30%);
+        height: 50vh;
+    }
+    .text-content h1 {
+        font-size: 2.7rem; /* 텍스트 크기를 줄임 */
+        margin-bottom: 20px;
+        line-height: 1.5;
+        height: 11vh;
+    }
+    .text-content p {
+        font-size: 1.2rem; /* 텍스트 크기를 줄임 */
+        margin-bottom: 40px;
+        color: #666;
+    }
+    .text-content .btn {
+        align-self: flex-start; /* 시작하기 버튼을 왼쪽 정렬 */
+        position: relative; /* 다른 버튼 스타일과 겹치지 않도록 */
+        padding: 15px 30px;
+        width: auto;
+    }
+</style>
+{% endblock %}

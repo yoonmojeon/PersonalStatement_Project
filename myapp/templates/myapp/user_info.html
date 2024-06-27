@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header>
+    <h1>사용자 정보</h1>
+</header>
+<section class="form-section">
+    <div class="form-container">
+        <p><strong>사용자명:</strong> {{ user.username }}</p>
+        <p><strong>이메일:</strong> {{ user.email }}</p>
+        <p><strong>가입일:</strong> {{ user.date_joined|date:"Y-m-d" }}</p>
+        <p><strong>마지막 로그인:</strong> {{ user.last_login|date:"Y-m-d H:i" }}</p>
+    </div>
+</section>
+
+<style>
+    body {
+        background-color: #f0f8ff;
+    }
+    
+    .form-section {
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 800px;
+    }
+
+    .form-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container p {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .form-container strong {
+        font-weight: bold;
+    }
+
+    header h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}

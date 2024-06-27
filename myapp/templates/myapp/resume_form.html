@@ -1,0 +1,92 @@
+<!-- templates/myapp/resume_create.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<header>
+    <h1>자기소개서 작성</h1>
+</header>
+<section class="form-section">
+    <form method="post" action="{% url 'resume_create' %}" class="form-container">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title"  required>
+        </div>
+        <div class="form-group">
+            <label for="content">내용:</label>
+            <textarea id="content" name="content"  rows="10" required></textarea>
+        </div>
+        <button type="submit" class="btn">저장</button>
+    </form>
+</section>
+
+<style>
+    body {
+        background-color: #f0f8ff;
+        
+    }
+
+    .form-section {
+        margin: 0 auto;
+        padding: 20px;
+        max-width: 600px;
+    }
+
+    .form-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+    }
+
+    .btn {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 15px 30px;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+    header h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    section h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
