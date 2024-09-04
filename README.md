@@ -18,15 +18,18 @@
 ## 3. 웹 애플리케이션 화면 예시
 
 ### 메인 페이지
-![Main Page](URL_TO_YOUR_IMAGE_1)
+<img src="home.png" alt="Main Page" width="400">
 
 ### 기업 분석 페이지
-![Company Analysis](URL_TO_YOUR_IMAGE_2)
+<img src="companies.png" alt="Company Analysis" width="400">
 
 ### 사용자 정보 입력 페이지
-![User Info Form](URL_TO_YOUR_IMAGE_3)
+<img src="prompt.png" alt="User Info Form" width="400">
 
-> 위 이미지는 각각 메인 페이지, 기업 분석 페이지, 사용자 정보 입력 페이지를 나타냅니다. 사용자는 쉽게 해당 페이지를 통해 기능을 사용할 수 있습니다.
+### 결과 페이지
+<img src="resume.png" alt="Statement Form" width="400">
+
+> 위 이미지는 각각 메인 페이지, 기업 분석 페이지, 사용자 정보 입력 페이지, 자기소개서 결과 페이지를 나타냅니다. 사용자는 쉽게 해당 페이지를 통해 기능을 사용할 수 있습니다.
 
 
 ## 4. 데이터 수집 및 모델 파인튜닝
